@@ -10,7 +10,7 @@ project(PL3D-KC LANGUAGES C)
 include(GNUInstallDirs)
 
 if(USE_SDL2)
-  find_package(SDL2 REQUIRED COMPONENTS)
+  find_package(SDL2 REQUIRED)
 endif()
 
 if(UNIX)
@@ -26,7 +26,7 @@ $<$<BOOL:${UNIX}>:fw/xvid.c>
 )
 target_include_directories(fw PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/fw)
 target_link_libraries(fw PRIVATE
-  $<$<BOOL:${USE_SDL2}>:SDL2>
+$<$<BOOL:${USE_SDL2}>:SDL2>
 $<$<BOOL:${UNIX}>:X11::Xext>
 $<$<BOOL:${WIN32}>:winmm>
 )
