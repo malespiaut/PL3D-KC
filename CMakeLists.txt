@@ -9,6 +9,10 @@ project(PL3D-KC LANGUAGES C)
 
 include(GNUInstallDirs)
 
+if(USE_SDL2)
+  find_package(SDL2 REQUIRED COMPONENTS)
+endif()
+
 if(UNIX)
   # apt install libx11-dev libxext-dev
   # brew install libx11 xquartz
@@ -16,11 +20,13 @@ if(UNIX)
 endif()
 
 add_library(fw fw/pkb.c fw/sys.c
+$<$<BOOL:${USE_SDL2}>:fw/sdl2_vid.c>
 $<$<BOOL:${WIN32}>:fw/wvid.c>
 $<$<BOOL:${UNIX}>:fw/xvid.c>
 )
 target_include_directories(fw PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/fw)
 target_link_libraries(fw PRIVATE
+  $<$<BOOL:${USE_SDL2}>:SDL2>
 $<$<BOOL:${UNIX}>:X11::Xext>
 $<$<BOOL:${WIN32}>:winmm>
 )
